@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
-  const { bar, instId, limit } = req.query;
+  const { bar = '1H', instId = 'BTC-USDT', limit = '10' } = req.query;
   const okxUrl = `https://www.okx.com/api/v5/market/candles?bar=${bar}&instId=${instId}&limit=${limit}`;
-  
+
   try {
     const response = await fetch(okxUrl, {
       headers: {
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     const data = await response.text();
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'application/json');
-    res.status(response.status).send(data);
+    res.status(200).send(data);
   } catch (e) {
     res.status(502).json({ error: e.message });
   }
